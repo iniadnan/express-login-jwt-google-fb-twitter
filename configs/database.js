@@ -10,8 +10,6 @@ let connection = mysql2.createConnection({
 connection.connect((error) => {
   if (!!error) {
     console.log(error);
-  } else {
-    console.log("Connection Succuessfully!");
   }
 });
 
