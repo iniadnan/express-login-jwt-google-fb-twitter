@@ -15,10 +15,24 @@ router.get("/", showAllArticleController);
 router.get("/:slug", showSingleArticleController);
 router.post(
   "/create",
-  [body("title").notEmpty(), body("slug").notEmpty(), body("author").notEmpty(), body("description").notEmpty()],
+  [
+    body("title").notEmpty(),
+    body("slug").notEmpty(),
+    body("author").notEmpty(),
+    body("description").notEmpty(),
+  ],
   createArticleController
 );
-router.put("/update", updateArticleController);
+router.patch(
+  "/update/:id",
+  [
+    body("title").notEmpty(),
+    body("slug").notEmpty(),
+    body("author").notEmpty(),
+    body("description").notEmpty(),
+  ],
+  updateArticleController
+);
 router.delete("/delete/:id", deleteOneArticle);
 
 module.exports = router;

@@ -45,9 +45,41 @@ const insertArticleModal = (data, result) => {
   );
 };
 
-const updateArticleModal = (data, result) => {};
+const updateArticleModal = (data, result) => {
+  connection.query(
+    "UPDATE articles SET title = ?, slug = ?, author = ?, description = ? WHERE id = ?",
+    [
+      data.title,
+      data.slug,
+      data.author,
+      data.description,
+      data.id,
+    ],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results);
+      }
+    }
+  );
+};
 
-const deleteArticleModal = (id, result) => {};
+const deleteArticleModal = (id, result) => {
+  connection.query(
+    "DELETE FROM articles WHERE id = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results);
+      }
+    }
+  );
+};
 
 module.exports = {
   getAllArticleModal,

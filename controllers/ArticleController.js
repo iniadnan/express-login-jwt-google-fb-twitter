@@ -59,7 +59,23 @@ const createArticleController = (req, res) => {
 };
 
 const updateArticleController = (req, res) => {
-  updateArticleModal((err, results) => {
+  // CHECK VALIDATION
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      errors: errors.array(),
+    });
+  }
+
+  const dataToUpdate = {
+    id: req.params.id.trim(),
+    title: req.body.title.trim(),
+    slug: req.body.slug.toLowerCase().trim(),
+    author: req.body.author.trim(),
+    description: req.body.description.trim(),
+  };
+
+  updateArticleModal(dataToUpdate, (err, results) => {
     if (err) {
       res.send(err);
     } else {
@@ -69,7 +85,17 @@ const updateArticleController = (req, res) => {
 };
 
 const deleteOneArticle = (req, res) => {
-  deleteArticleModal((err, results) => {
+  // CHECK VALIDATION
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      errors: errors.array(),
+    });
+  }
+
+  const id = req.params.id.trim();
+
+  deleteArticleModal(id, (err, results) => {
     if (err) {
       res.send(err);
     } else {
