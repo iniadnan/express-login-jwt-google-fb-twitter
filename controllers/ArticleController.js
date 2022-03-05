@@ -1,3 +1,7 @@
+const { validationResult } = require("express-validator");
+const { v4: uuidv4 } = require("uuid");
+const getDateNow = require("../helpers/dateNow");
+
 // IMPORT MODEL
 const {
   getAllArticleModal,
@@ -28,7 +32,24 @@ const showSingleArticleController = (req, res) => {
 };
 
 const createArticleController = (req, res) => {
-  insertArticleModal((err, results) => {
+  // CHECK VALIDATION
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      errors: errors.array(),
+    });
+  }
+
+  const dataToInsert = {
+    id: uuidv4(),
+    title: req.body.title.trim(),
+    slug: req.body.slug.toLowerCase().trim(),
+    author: req.body.author.trim(),
+    description: req.body.description.trim(),
+    date: getDateNow(),
+  };
+
+  insertArticleModal(dataToInsert, (err, results) => {
     if (err) {
       res.send(err);
     } else {
@@ -62,5 +83,5 @@ module.exports = {
   showSingleArticleController,
   createArticleController,
   updateArticleController,
-  deleteOneArticle
+  deleteOneArticle,
 };
